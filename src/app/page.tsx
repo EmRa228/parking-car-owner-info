@@ -111,6 +111,22 @@ export default function Home() {
         }
     };
 
+    // Add helper function to compute elapsed time
+    const getTimeElapsed = (createdAt: string) => {
+        const created = new Date(createdAt);
+        const now = new Date();
+        const diffInSeconds = Math.floor((now.getTime() - created.getTime()) / 1000);
+        if (diffInSeconds < 60) return `${diffInSeconds} ثانیه پیش`;
+        const diffInMinutes = Math.floor(diffInSeconds / 60);
+        if (diffInMinutes < 60) return `${diffInMinutes} دقیقه پیش`;
+        const diffInHours = Math.floor(diffInMinutes / 60);
+        if (diffInHours < 24) return `${diffInHours} ساعت پیش`;
+        const diffInDays = Math.floor(diffInHours / 24);
+        if (diffInDays < 365) return `${diffInDays} روز پیش`;
+        const diffInYears = Math.floor(diffInDays / 365);
+        return `${diffInYears} سال پیش`;
+    };
+
     return (
         <div className="relative container mx-auto p-4">
             {/* Dialog Trigger Button on top left */}
@@ -142,7 +158,7 @@ export default function Home() {
                                     <Input type="tel" id="phone" name="phone" required />
                                 </div>
                                 <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/80">
-                                    ثبت
+                                    ثبت خودرو
                                 </Button>
                             </form>
                         </CardContent>
@@ -180,11 +196,14 @@ export default function Home() {
                                     <TableCell className="font-medium">{car.plate}</TableCell>
                                     <TableCell>{car.model}</TableCell>
                                     <TableCell className="text-right">{car.ownerUnit}</TableCell>
-                                    <TableCell className="text-right flex gap-0.5">
+                                    <TableCell className="text-right flex flex-col gap-0.5">
                                         <Button variant="outline" size="sm" onClick={() => handleCallOwner(car.phone)}>
                                             <Phone className="mr-2 h-2 w-2" />
                                             تماس
                                         </Button>
+                                        <small className="text-xs text-muted-foreground">
+                                            {getTimeElapsed(car.created_at)}
+                                        </small>
                                     </TableCell>
                                 </TableRow>
                             ))}
