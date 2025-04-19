@@ -143,7 +143,7 @@ export default function Home() {
                             <form onSubmit={handleSubmitCar} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <Label htmlFor="plate">شماره پلاک:</Label>
-                                    <Input type="text" id="plate" name="plate" required />
+                                    <Input type="text" id="plate" name="plate" minLength={8} required />
                                 </div>
                                 <div>
                                     <Label htmlFor="model">مدل و رنگ خودرو:</Label>
@@ -155,7 +155,19 @@ export default function Home() {
                                 </div>
                                 <div>
                                     <Label htmlFor="phone">شماره موبایل:</Label>
-                                    <Input type="tel" id="phone" name="phone" required />
+                                    <Input 
+                                        type="tel" 
+                                        id="phone" 
+                                        name="phone" 
+                                        required 
+                                        pattern="^09[0-9]{9}$"
+                                        inputMode="numeric"
+                                        onChange={(e) => { 
+                                            let newValue = e.target.value.replace(/\D/g, "");
+                                            if (newValue.length > 11) newValue = newValue.slice(0, 11);
+                                            e.target.value = newValue;
+                                        }}
+                                    />
                                 </div>
                                 <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/80">
                                     ثبت خودرو
