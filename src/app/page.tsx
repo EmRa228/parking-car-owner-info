@@ -78,7 +78,7 @@ export default function Home() {
     };
 
     const handleCallOwner = (phone: string) => {
-        alert(`Calling Owner: Initiating call to ${phone}...`); // replaced toast with alert
+        // alert(`Calling Owner: Initiating call to ${phone}...`); // replaced toast with alert
         window.location.href = `tel:${phone}`;
     };
 
