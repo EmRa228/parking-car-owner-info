@@ -230,8 +230,12 @@ export default function Home() {
                     type="text" 
                     placeholder="شماره پلاک" 
                     value={plate} 
-                    // NEW: Convert user input to English digits
-                    onChange={(e) => setPlate(convertToEnglishNumbers(e.target.value))} 
+                    // UPDATED: Convert input to English digits and allow only numbers
+                    onChange={(e) => { 
+                        let value = convertToEnglishNumbers(e.target.value);
+                        value = value.replace(/\D/g, "");
+                        setPlate(value);
+                    }} 
                 />
                 <Input 
                     type="text" 
@@ -246,6 +250,8 @@ export default function Home() {
             {/* Search Results */}
             {loading ? (
                 <p>درحال فراخوانی اطلاعات...</p>
+            ) : (plate.length < 2 && model.length < 2) ? (
+                <p>برای دیدن شماره تماس مالک خودرو بخشی از شماره پلاک را جستجو کنید</p>
             ) : searchResults.length === 0 ? (
                 <p>هیچ نتیجه ای یافت نشد.</p>
             ) : (
