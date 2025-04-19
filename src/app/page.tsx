@@ -45,12 +45,7 @@ export default function Home() {
 
         if (error) {
             console.error("Error fetching cars:", error);
-            // restored toast
-            toast({
-                title: "Error",
-                description: "Failed to load car data.",
-                variant: "destructive",
-            });
+            alert("Error: Failed to load car data."); // replaced toast with alert
         } else {
             setCars(data);
             setSearchResults(data);
@@ -67,11 +62,7 @@ export default function Home() {
     };
 
     const handleCallOwner = (phone: string) => {
-        // restored toast
-        toast({
-            title: "Calling Owner",
-            description: `Initiating call to ${phone}...`,
-        });
+        alert(`Calling Owner: Initiating call to ${phone}...`); // replaced toast with alert
         window.location.href = `tel:${phone}`;
     };
 
@@ -86,26 +77,25 @@ export default function Home() {
             phone: formData.get("phone") as string,
         };
 
+        // Prevent duplicate insert based on plate
+        if(cars.some((car: any) => car.plate === newCar.plate)) {
+            alert("Duplicate Insert: Car with this plate already exists."); // replaced toast with alert
+            return;
+        }
+
         const { data, error } = await supabase
             .from('cars')
             .insert([newCar])
-            .select();
+            .select()
+            .order('id', { ascending: false }) // sort by id descending
+            .limit(10000); // limit records to 10000
 
         if (error) {
             console.error("Error submitting car:", error);
-            // restored toast
-            toast({
-                title: "Error",
-                description: "Failed to submit car data.",
-                variant: "destructive",
-            });
+            alert("Error: Failed to submit car data."); // replaced toast with alert
         } else {
             setCars([...cars, newCar as any]);
-            // restored toast
-            toast({
-                title: "Car Submitted",
-                description: `Car with plate ${newCar.plate} submitted successfully!`,
-            });
+            alert(`Car Submitted: Car with plate ${newCar.plate} submitted successfully!`); // replaced toast with alert
             setOpen(false); // close dialog after submission
             fetchCars(); // Refresh car list
         }
