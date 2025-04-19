@@ -60,10 +60,20 @@ export default function Home() {
 
 
     const handleSearch = () => {
-        const results = cars.filter((car) =>
-            car.plate.includes(plate) &&
-            car.model.includes(model)
-        );
+        let results = cars;
+        if (plate.length && model.length) {
+            results = cars.filter((car: any) => 
+                car.plate.includes(plate) && car.model.includes(model)
+            );
+        } else if (plate.length) {;
+            results = cars.filter((car: any) => 
+                car.plate.includes(plate)
+            );
+        } else if (model.length) {
+            results = cars.filter((car: any) => 
+                car.model.includes(model)
+            );
+        }
         setSearchResults(results);
     };
 
