@@ -24,7 +24,6 @@ const supabase = createClientComponentClient();
 export default function Home() {
     const [cars, setCars] = useState([]);
     const [plate, setPlate] = useState("");
-    const [color, setColor] = useState("");
     const [model, setModel] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const { toast } = useToast();
@@ -55,7 +54,6 @@ export default function Home() {
     const handleSearch = () => {
         const results = cars.filter((car) =>
             car.plate.includes(plate) &&
-            car.color.includes(color) &&
             car.model.includes(model)
         );
         setSearchResults(results);
@@ -70,20 +68,12 @@ export default function Home() {
         window.location.href = `tel:${phone}`;
     };
 
-    const handleRevealPhoneNumber = (phoneNumber: string) => {
-        toast({
-            title: "Phone Number Revealed",
-            description: `The owner's phone number is ${phoneNumber}`,
-        });
-    };
-
     const handleSubmitCar = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
         const newCar = {
             plate: formData.get("plate") as string,
-            color: formData.get("color") as string,
             model: formData.get("model") as string,
             ownerUnit: formData.get("ownerUnit") as string,
             phone: formData.get("phone") as string,
@@ -113,13 +103,12 @@ export default function Home() {
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">اطلاعات خودرو</h1>
+            <h1 className="text-2xl font-bold mb-4">اطلاعات خودروها</h1>
 
             {/* Search Filters */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <Input type="text" placeholder="شماره پلاک" value={plate} onChange={(e) => setPlate(e.target.value)} />
-                <Input type="text" placeholder="رنگ" value={color} onChange={(e) => setColor(e.target.value)} />
-                <Input type="text" placeholder="مدل" value={model} onChange={(e) => setModel(e.target.value)} />
+                <Input type="text" placeholder="مدل و رنگ" value={model} onChange={(e) => setModel(e.target.value)} />
             </div>
             <Button onClick={handleSearch} className="bg-primary text-primary-foreground hover:bg-primary/80">جستجو</Button>
 
@@ -130,14 +119,12 @@ export default function Home() {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <Table className="w-full">
-                        <TableCaption>A list of your car details.</TableCaption>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-[100px]">Plate</TableHead>
-                                <TableHead>Model</TableHead>
-                                <TableHead>Color</TableHead>
-                                <TableHead className="text-right">Unit</TableHead>
-                                <TableHead className="text-right">Actions</TableHead>
+                                <TableHead className="w-[100px]">پلاک</TableHead>
+                                <TableHead>مدل و رنگ</TableHead>
+                                <TableHead className="text-right">واحد</TableHead>
+                                <TableHead className="text-right">عملیات</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -145,30 +132,12 @@ export default function Home() {
                                 <TableRow key={car.plate}>
                                     <TableCell className="font-medium">{car.plate}</TableCell>
                                     <TableCell>{car.model}</TableCell>
-                                    <TableCell>{car.color}</TableCell>
                                     <TableCell className="text-right">{car.ownerUnit}</TableCell>
                                     <TableCell className="text-right flex gap-2">
                                         <Button variant="outline" size="sm" onClick={() => handleCallOwner(car.phone)}>
                                             <Phone className="mr-2 h-4 w-4" />
                                             تماس با مالک
                                         </Button>
-                                        <Dialog>
-                                            <DialogTrigger asChild>
-                                                <Button variant="outline" size="sm">
-                                                    دیدن شماره تلفن
-                                                </Button>
-                                            </DialogTrigger>
-                                            <DialogContent className="sm:max-w-[425px]">
-                                                <DialogTitle>شماره تلفن مالک</DialogTitle>
-                                                <DialogDescription>
-                                                    این شماره تلفن به صورت ناشناس ثبت شده است.
-                                                </DialogDescription>
-                                                <div className="flex items-center space-x-2">
-                                                    <p className="text-right">آیا میخواهید شماره تلفن مالک را ببینید؟</p>
-                                                    <Button onClick={() => handleRevealPhoneNumber(car.phone)}>بله</Button>
-                                                </div>
-                                            </DialogContent>
-                                        </Dialog>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -185,10 +154,6 @@ export default function Home() {
                         <div>
                             <Label htmlFor="plate">شماره پلاک:</Label>
                             <Input type="text" id="plate" name="plate" required />
-                        </div>
-                        <div>
-                            <Label htmlFor="color">رنگ:</Label>
-                            <Input type="text" id="color" name="color" />
                         </div>
                         <div>
                             <Label htmlFor="model">مدل:</Label>
