@@ -45,6 +45,7 @@ export default function Home() {
 
         if (error) {
             console.error("Error fetching cars:", error);
+            // restored toast
             toast({
                 title: "Error",
                 description: "Failed to load car data.",
@@ -66,11 +67,11 @@ export default function Home() {
     };
 
     const handleCallOwner = (phone: string) => {
+        // restored toast
         toast({
             title: "Calling Owner",
             description: `Initiating call to ${phone}...`,
         });
-
         window.location.href = `tel:${phone}`;
     };
 
@@ -92,6 +93,7 @@ export default function Home() {
 
         if (error) {
             console.error("Error submitting car:", error);
+            // restored toast
             toast({
                 title: "Error",
                 description: "Failed to submit car data.",
@@ -99,11 +101,12 @@ export default function Home() {
             });
         } else {
             setCars([...cars, newCar as any]);
+            // restored toast
             toast({
                 title: "Car Submitted",
                 description: `Car with plate ${newCar.plate} submitted successfully!`,
             });
-            setOpen(false); // NEW: close dialog after submission
+            setOpen(false); // close dialog after submission
             fetchCars(); // Refresh car list
         }
     };
@@ -148,7 +151,7 @@ export default function Home() {
             </Dialog>
 
             {/* Page Header */}
-            <h1 className="text-2xl font-bold mb-4">اطلاعات خودروها</h1>
+            <h1 className="text-2xl font-bold mb-4">جستجو در اطلاعات خودروها</h1>
 
             {/* Search Filters */}
             <div className="flex items-center gap-4 mb-4">
@@ -158,11 +161,10 @@ export default function Home() {
             {/* Removed the search button as search is now triggered on input change */}
 
             {/* Search Results */}
-            <h2 className="text-xl font-bold mt-6 mb-2">نتایج جستجو</h2>
             {searchResults.length === 0 ? (
                 <p>هیچ نتیجه ای یافت نشد.</p>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                     <Table className="w-full">
                         <TableHeader>
                             <TableRow>
@@ -178,10 +180,10 @@ export default function Home() {
                                     <TableCell className="font-medium">{car.plate}</TableCell>
                                     <TableCell>{car.model}</TableCell>
                                     <TableCell className="text-right">{car.ownerUnit}</TableCell>
-                                    <TableCell className="text-right flex gap-2">
+                                    <TableCell className="text-right flex gap-0.5">
                                         <Button variant="outline" size="sm" onClick={() => handleCallOwner(car.phone)}>
-                                            <Phone className="mr-2 h-4 w-4" />
-                                            تماس با مالک
+                                            <Phone className="mr-2 h-2 w-2" />
+                                            تماس
                                         </Button>
                                     </TableCell>
                                 </TableRow>
