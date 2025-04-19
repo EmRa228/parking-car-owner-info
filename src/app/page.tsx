@@ -155,7 +155,7 @@ export default function Home() {
                     <DialogTitle>ثبت اطلاعات خودرو</DialogTitle>
                     <Card>
                         <CardContent>
-                            <form onSubmit={handleSubmitCar} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <form onSubmit={handleSubmitCar} className="grid grid-cols-1 md:grid-cols-1 gap-4">
                                 <div>
                                     <Label htmlFor="plate">شماره پلاک:</Label>
                                     <Input
@@ -169,7 +169,10 @@ export default function Home() {
                                         // NEW: Convert input to English digits
                                         onChange={(e) => { e.target.value = convertToEnglishNumbers(e.target.value); }}
                                     />
+                                    
+                                    <small className="text-xs text-center text-muted-foreground">
                                     پلاک را به صورت 55|973ل61 و بدون فاصله کنید
+                                    </small>
                                 </div>
                                 <div>
                                     <Label htmlFor="model">مدل و رنگ خودرو:</Label>
