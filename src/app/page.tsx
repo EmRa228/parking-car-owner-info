@@ -25,7 +25,8 @@ export default function Home() {
     const [cars, setCars] = useState([]);
     const [plate, setPlate] = useState("");
     const [model, setModel] = useState("");
-    const [searchResults, setSearchResults] = useState([]);
+    const [searchResults, setSearchResults] = useState([{}]);
+    const [loading, setLoading] = useState(false); // new loading state
     const { toast } = useToast();
     const [open, setOpen] = useState<boolean>(false);
 
@@ -39,11 +40,14 @@ export default function Home() {
     }, [plate, model]);
 
     const fetchCars = async () => {
+        setLoading(true); // start loading
         const { data, error } = await supabase
             .from('cars')
             .select('*')
             .order('id', { ascending: false }) // sort by id descending
             .limit(10000);
+
+        setLoading(false); // end loading
 
         if (error) {
             console.error("Error fetching cars:", error);
@@ -179,7 +183,11 @@ export default function Home() {
             {/* Removed the search button as search is now triggered on input change */}
 
             {/* Search Results */}
-            {searchResults.length === 0 ? (
+            {loading ? (
+                <p>درحال فراخوانی اطلاعات...</p>
+            ) : searchResults === false ? (
+                <p>هیچ نتیجه ای یافت نشد.</p>
+            ) :  searchResults.length === 0 ? (
                 <p>هیچ نتیجه ای یافت نشد.</p>
             ) : (
                 <div className="grid grid-cols-1 gap-4">
