@@ -164,9 +164,12 @@ export default function Home() {
                                         name="plate"
                                         minLength={8}
                                         required
+                                        pattern="^[0-9]{2}\|[0-9]{3}.*"
+                                        placeholder="مثال: 55|973ل61"
                                         // NEW: Convert input to English digits
                                         onChange={(e) => { e.target.value = convertToEnglishNumbers(e.target.value); }}
                                     />
+                                    پلاک را به صورت 55|973ل61 و بدون فاصله کنید
                                 </div>
                                 <div>
                                     <Label htmlFor="model">مدل و رنگ خودرو:</Label>
