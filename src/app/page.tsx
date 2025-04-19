@@ -32,6 +32,11 @@ export default function Home() {
         fetchCars();
     }, []);
 
+    // NEW: trigger search when input values change
+    useEffect(() => {
+        handleSearch();
+    }, [plate, model]);
+
     const fetchCars = async () => {
         const { data, error } = await supabase
             .from('cars')
@@ -102,15 +107,53 @@ export default function Home() {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="relative container mx-auto p-4">
+            {/* Dialog Trigger Button on top left */}
+            <Dialog>
+                <DialogTrigger asChild>
+                    <Button className="absolute top-4 left-4 bg-accent text-accent-foreground hover:bg-accent/80">
+                        ثبت خودرو
+                    </Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogTitle>ثبت اطلاعات خودرو</DialogTitle>
+                    <Card>
+                        <CardContent>
+                            <form onSubmit={handleSubmitCar} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <Label htmlFor="plate">شماره پلاک:</Label>
+                                    <Input type="text" id="plate" name="plate" required />
+                                </div>
+                                <div>
+                                    <Label htmlFor="model">مدل:</Label>
+                                    <Input type="text" id="model" name="model" />
+                                </div>
+                                <div>
+                                    <Label htmlFor="ownerUnit">واحد:</Label>
+                                    <Input type="text" id="ownerUnit" name="ownerUnit" />
+                                </div>
+                                <div>
+                                    <Label htmlFor="phone">شماره موبایل:</Label>
+                                    <Input type="tel" id="phone" name="phone" required />
+                                </div>
+                                <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/80">
+                                    ثبت
+                                </Button>
+                            </form>
+                        </CardContent>
+                    </Card>
+                </DialogContent>
+            </Dialog>
+
+            {/* Page Header */}
             <h1 className="text-2xl font-bold mb-4">اطلاعات خودروها</h1>
 
             {/* Search Filters */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div className="flex items-center gap-4 mb-4">
                 <Input type="text" placeholder="شماره پلاک" value={plate} onChange={(e) => setPlate(e.target.value)} />
                 <Input type="text" placeholder="مدل و رنگ" value={model} onChange={(e) => setModel(e.target.value)} />
             </div>
-            <Button onClick={handleSearch} className="bg-primary text-primary-foreground hover:bg-primary/80">جستجو</Button>
+            {/* Removed the search button as search is now triggered on input change */}
 
             {/* Search Results */}
             <h2 className="text-xl font-bold mt-6 mb-2">نتایج جستجو</h2>
@@ -145,32 +188,6 @@ export default function Home() {
                     </Table>
                 </div>
             )}
-
-            {/* Data Submission Form */}
-            <h2 className="text-xl font-bold mt-6 mb-2">ثبت اطلاعات خودرو</h2>
-            <Card>
-                <CardContent>
-                    <form onSubmit={handleSubmitCar} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <Label htmlFor="plate">شماره پلاک:</Label>
-                            <Input type="text" id="plate" name="plate" required />
-                        </div>
-                        <div>
-                            <Label htmlFor="model">مدل:</Label>
-                            <Input type="text" id="model" name="model" />
-                        </div>
-                        <div>
-                            <Label htmlFor="ownerUnit">واحد:</Label>
-                            <Input type="text" id="ownerUnit" name="ownerUnit" />
-                        </div>
-                        <div>
-                            <Label htmlFor="phone">شماره موبایل:</Label>
-                            <Input type="tel" id="phone" name="phone" required />
-                        </div>
-                        <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/80">ثبت</Button>
-                    </form>
-                </CardContent>
-            </Card>
         </div>
     );
 }
