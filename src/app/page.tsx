@@ -72,6 +72,10 @@ export default function Home() {
 
     const handleSearch = () => {
         let results = cars;
+        if(cars.length === 0) {
+            setSearchResults([]);
+            return;
+        }
         if (plate.length && model.length) {
             results = cars.filter((car: any) => 
                 car.plate.includes(plate) && car.model.includes(model)
