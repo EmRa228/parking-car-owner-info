@@ -240,9 +240,7 @@ export default function Home() {
             {/* Search Results */}
             {loading ? (
                 <p>درحال فراخوانی اطلاعات...</p>
-            ) : searchResults === false ? (
-                <p>هیچ نتیجه ای یافت نشد.</p>
-            ) :  searchResults.length === 0 ? (
+            ) : searchResults.length === 0 ? (
                 <p>هیچ نتیجه ای یافت نشد.</p>
             ) : (
                 <div className="grid grid-cols-1 gap-4">
