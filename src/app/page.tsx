@@ -210,8 +210,8 @@ export default function Home() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {searchResults.map((car: any) => (
-                                <TableRow key={car.plate}>
+                            {searchResults.map((car: any, index: number) => (
+                                <TableRow key={car.id || `${car.plate}_${index}`}>
                                     <TableCell className="font-medium">{car.plate}</TableCell>
                                     <TableCell>
                                         {car.model}
