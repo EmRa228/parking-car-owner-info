@@ -146,11 +146,11 @@ export default function Home() {
                                     <Input type="text" id="plate" name="plate" required />
                                 </div>
                                 <div>
-                                    <Label htmlFor="model">مدل:</Label>
+                                    <Label htmlFor="model">مدل و رنگ خودرو:</Label>
                                     <Input type="text" id="model" name="model" />
                                 </div>
                                 <div>
-                                    <Label htmlFor="ownerUnit">واحد:</Label>
+                                    <Label htmlFor="ownerUnit">نام مالک:</Label>
                                     <Input type="text" id="ownerUnit" name="ownerUnit" />
                                 </div>
                                 <div>
@@ -185,8 +185,7 @@ export default function Home() {
                         <TableHeader>
                             <TableRow>
                                 <TableHead className="w-[100px]">پلاک</TableHead>
-                                <TableHead>مدل و رنگ</TableHead>
-                                <TableHead className="text-right">واحد</TableHead>
+                                <TableHead>مدل، رنگ، مالک</TableHead>
                                 <TableHead className="text-right">عملیات</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -194,14 +193,20 @@ export default function Home() {
                             {searchResults.map((car: any) => (
                                 <TableRow key={car.plate}>
                                     <TableCell className="font-medium">{car.plate}</TableCell>
-                                    <TableCell>{car.model}</TableCell>
-                                    <TableCell className="text-right">{car.ownerUnit}</TableCell>
+                                    <TableCell>
+                                        {car.model}
+                                        <div>
+                                        <small className="text-xs text-center text-muted-foreground">
+                                        {car.ownerUnit}
+                                        </small>
+                                        </div>
+                                        </TableCell>
                                     <TableCell className="text-right flex flex-col gap-0.5">
                                         <Button variant="outline" size="sm" onClick={() => handleCallOwner(car.phone)}>
                                             <Phone className="mr-2 h-2 w-2" />
                                             تماس
                                         </Button>
-                                        <small className="text-xs text-muted-foreground">
+                                        <small className="text-xs text-center text-muted-foreground">
                                             {getTimeElapsed(car.created_at)}
                                         </small>
                                     </TableCell>
