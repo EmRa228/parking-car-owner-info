@@ -51,7 +51,7 @@ export default function Home() {
 
         if (error) {
             console.error("Error fetching cars:", error);
-            alert("Error: Failed to load car data."); // replaced toast with alert
+            alert("خطا در دریافت اطلعات خودرو ها"); // replaced toast with alert
         } else {
             setCars(data);
             setSearchResults(data);
@@ -95,7 +95,7 @@ export default function Home() {
 
         // Prevent duplicate insert based on plate
         if(cars.some((car: any) => car.plate === newCar.plate)) {
-            alert("Duplicate Insert: Car with this plate already exists."); // replaced toast with alert
+            alert("این پلاک موجود است. امکان ثبت پلاک تکراری وجود ندارد"); // replaced toast with alert
             return;
         }
 
@@ -105,11 +105,11 @@ export default function Home() {
             .select();
 
         if (error) {
-            console.error("Error submitting car:", error);
-            alert("Error: Failed to submit car data."); // replaced toast with alert
+            console.error("خطا در ثبت خودرو جدید", error);
+            alert("خطا در ثبت خودرو جدید"); // replaced toast with alert
         } else {
-            setCars([...cars, newCar as any]);
-            alert(`Car Submitted: Car with plate ${newCar.plate} submitted successfully!`); // replaced toast with alert
+            setCars([newCar as any, ...cars]);
+            alert(`خودرو با پلاک ${newCar.plate} ثبت شد!`); // replaced toast with alert
             setOpen(false); // close dialog after submission
             fetchCars(); // Refresh car list
         }
