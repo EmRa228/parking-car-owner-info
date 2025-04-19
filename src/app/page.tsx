@@ -1,5 +1,16 @@
 "use client";
 
+// NEW: Add helper function for converting Arabic/Persian numbers to English numbers
+function convertToEnglishNumbers(input: string): string {
+    return input.replace(/[\u0660-\u0669\u06f0-\u06f9]/g, (d) =>
+        String.fromCharCode(
+            d.charCodeAt(0) < 0x06f0 
+                ? d.charCodeAt(0) - 0x0660 + 48 
+                : d.charCodeAt(0) - 0x06f0 + 48
+        )
+    );
+}
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -147,15 +158,35 @@ export default function Home() {
                             <form onSubmit={handleSubmitCar} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <Label htmlFor="plate">شماره پلاک:</Label>
-                                    <Input type="text" id="plate" name="plate" minLength={8} required />
+                                    <Input
+                                        type="text"
+                                        id="plate"
+                                        name="plate"
+                                        minLength={8}
+                                        required
+                                        // NEW: Convert input to English digits
+                                        onChange={(e) => { e.target.value = convertToEnglishNumbers(e.target.value); }}
+                                    />
                                 </div>
                                 <div>
                                     <Label htmlFor="model">مدل و رنگ خودرو:</Label>
-                                    <Input type="text" id="model" name="model" />
+                                    <Input
+                                        type="text"
+                                        id="model"
+                                        name="model"
+                                        // NEW: Convert input to English digits
+                                        onChange={(e) => { e.target.value = convertToEnglishNumbers(e.target.value); }}
+                                    />
                                 </div>
                                 <div>
                                     <Label htmlFor="ownerUnit">نام مالک:</Label>
-                                    <Input type="text" id="ownerUnit" name="ownerUnit" />
+                                    <Input
+                                        type="text"
+                                        id="ownerUnit"
+                                        name="ownerUnit"
+                                        // NEW: Convert input to English digits
+                                        onChange={(e) => { e.target.value = convertToEnglishNumbers(e.target.value); }}
+                                    />
                                 </div>
                                 <div>
                                     <Label htmlFor="phone">شماره موبایل:</Label>
@@ -166,8 +197,10 @@ export default function Home() {
                                         required 
                                         pattern="^09[0-9]{9}$"
                                         inputMode="numeric"
+                                        // UPDATED: Convert to English digits then filter non-digits
                                         onChange={(e) => { 
-                                            let newValue = e.target.value.replace(/\D/g, "");
+                                            let newValue = convertToEnglishNumbers(e.target.value);
+                                            newValue = newValue.replace(/\D/g, "");
                                             if (newValue.length > 11) newValue = newValue.slice(0, 11);
                                             e.target.value = newValue;
                                         }}
@@ -187,8 +220,20 @@ export default function Home() {
 
             {/* Search Filters */}
             <div className="flex items-center gap-4 mb-4">
-                <Input type="text" placeholder="شماره پلاک" value={plate} onChange={(e) => setPlate(e.target.value)} />
-                <Input type="text" placeholder="مدل و رنگ" value={model} onChange={(e) => setModel(e.target.value)} />
+                <Input 
+                    type="text" 
+                    placeholder="شماره پلاک" 
+                    value={plate} 
+                    // NEW: Convert user input to English digits
+                    onChange={(e) => setPlate(convertToEnglishNumbers(e.target.value))} 
+                />
+                <Input 
+                    type="text" 
+                    placeholder="مدل و رنگ" 
+                    value={model} 
+                    // NEW: Convert user input to English digits
+                    onChange={(e) => setModel(convertToEnglishNumbers(e.target.value))} 
+                />
             </div>
             {/* Removed the search button as search is now triggered on input change */}
 
