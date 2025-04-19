@@ -41,7 +41,9 @@ export default function Home() {
     const fetchCars = async () => {
         const { data, error } = await supabase
             .from('cars')
-            .select('*');
+            .select('*')
+            .order('id', { ascending: false }) // sort by id descending
+            .limit(10000);
 
         if (error) {
             console.error("Error fetching cars:", error);
@@ -86,9 +88,7 @@ export default function Home() {
         const { data, error } = await supabase
             .from('cars')
             .insert([newCar])
-            .select()
-            .order('id', { ascending: false }) // sort by id descending
-            .limit(10000); // limit records to 10000
+            .select();
 
         if (error) {
             console.error("Error submitting car:", error);
