@@ -23,26 +23,27 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 ## Supabase Setup
 
 1. Create a new project on [Supabase](https://supabase.com/).
-2. Run the following SQL to create the necessary tables:
+2. Run the following SQL to create the necessary table:
 
 ```sql
--- Cars table
-create table cars (
+-- Cars and Owners table
+create table car_owners (
     id serial primary key,
     plate varchar not null,
     color varchar,
     model varchar,
+    owner_name varchar not null,
+    unit varchar,
+    phone varchar not null,
     inserted_at timestamp with time zone default timezone('utc'::text, now())
 );
 
--- Owners table
-create table owners (
-    id serial primary key,
-    name varchar not null,
-    unit varchar,
-    phone varchar,
-    car_id integer references cars(id) on delete cascade
-);
+-- Enable public access
+alter table car_owners enable row level security;
+create policy "Public access" on car_owners
+    for select using (true);
+create policy "Insert access" on car_owners
+    for insert using (true);
 ```
 
 ## Learn More
@@ -58,6 +59,35 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 1. Connect your repository on [Vercel](https://vercel.com/).
 2. Set the following environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+3. Deploy the project.
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+## Database Setup
+
+1. Create a `cars` table with the following fields:
+
+   - `id` (Primary Key, Auto Increment)
+   - `plate` (Text, Required)
+   - `color` (Text, Optional)
+   - `model` (Text, Optional)
+   - `owner_id` (Foreign Key to `owners` table)
+
+2. Create an `owners` table with the following fields:
+
+   - `id` (Primary Key, Auto Increment)
+   - `name` (Text, Required)
+   - `unit` (Text, Optional)
+   - `phone` (Text, Required)
+
+3. Enable public access to the database for read and write operations.
+
+## Deploy on Vercel
+
+1. Connect your repository on [Vercel](https://vercel.com/).
+2. Set the following environment variables:
    - NEXT_PUBLIC_SUPABASE_URL
    - NEXT_PUBLIC_SUPABASE_ANON_KEY
 3. Deploy the project.
@@ -66,24 +96,24 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-
 make a great next.js app based this information:
+
 - this is an app for see car owner in parking who is parked his car in front of user cars and user want find it and call to his number
 - user can search plate and will get info about cars, owner and a button for call with owner
-- car data is: 
--- 1) plate
--- 2) color
--- 3) model
+- car data is:
+  -- 1) plate
+  -- 2) color
+  -- 3) model
 - owner car data is
--- name
--- unit name(department)
--- phone
+  -- name
+  -- unit name(department)
+  -- phone
 - database of project is completely online with https://supabase.com/, help me for create tables and ...
 - and finally I want deploy it on https://vercel.com/, help me with some details
 - I want no login and data be public access but list of numbers not shows on first page and user see some stat and search filter on first page and when fill atleast one fields, User can see result as list(card for mobile view)
 - design of website be modern and for 18-30 years old users.
 - IRAN country plate itself has some fields. a plate is like: 77 د 568 IR99 and another plate is 54 الف 689 IR23
-- all users can insert new data for cars in first page without login and only mobile and plate is required 
+- all users can insert new data for cars in first page without login and only mobile and plate is required
 
 create all next.js files that need.
 
