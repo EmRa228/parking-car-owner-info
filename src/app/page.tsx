@@ -27,6 +27,7 @@ export default function Home() {
     const [model, setModel] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const { toast } = useToast();
+    const [open, setOpen] = useState<boolean>(false);
 
     useEffect(() => {
         fetchCars();
@@ -102,6 +103,7 @@ export default function Home() {
                 title: "Car Submitted",
                 description: `Car with plate ${newCar.plate} submitted successfully!`,
             });
+            setOpen(false); // NEW: close dialog after submission
             fetchCars(); // Refresh car list
         }
     };
@@ -109,7 +111,7 @@ export default function Home() {
     return (
         <div className="relative container mx-auto p-4">
             {/* Dialog Trigger Button on top left */}
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     <Button className="absolute top-4 left-4 bg-accent text-accent-foreground hover:bg-accent/80">
                         ثبت خودرو
